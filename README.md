@@ -46,6 +46,13 @@
 
 ---
 
+## 🌐 Ссылки на проект
+
+- **Живой сайт**: [https://mrrebrik28.github.io/zazozh/](https://mrrebrik28.github.io/zazozh/)
+- **Репозиторий GitHub**: [https://github.com/MrRebrik28/zazozh](https://github.com/MrRebrik28/zazozh)
+
+---
+
 ## 🚀 Быстрый старт
 
 ### Установка зависимостей
