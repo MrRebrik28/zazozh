@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf7f6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Восстановление">
+  <link rel="manifest" href="./assets/manifest-B4qmMrzp.webmanifest">
+  <title>Моё восстановление</title>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script type="module" crossorigin src="./assets/index-B2_Rx5L-.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-B-oKsayn.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">МОЁ ПРОСТРАНСТВО</p>
+      <h1 class="app-title">Привет, Дашуля ♡</h1>
+      <p class="app-subtitle">Твоё бережное восстановление — маленькими шагами, без давления.</p>
+    </div>
+    <button id="themeToggle" class="theme-toggle" aria-label="Переключить тему">
+      <span id="themeIcon">🌙</span>
+    </button>
+  </header>
+
+  <main class="container">
+    <!-- PANEL 1: СЕГОДНЯ -->
+    <section id="today" class="panel active">
+      <div class="card">
+        <h2 id="welcomeDate">Твой день</h2>
+        <p class="muted" style="margin-top:0">Не обязательно успеть всё. Достаточно заметить, как ты себя чувствуешь, и сделать один комфортный шаг.</p>
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" id="jumpCheckin">Заполнить чек-ин ↓</button>
+        </div>
+      </div>
+
+      <!-- Состояние сегодня -->
+      <div class="card">
+        <h2>Твоё состояние сегодня</h2>
+        <div class="stat-grid stat-grid-4">
+          <div class="stat"><div class="k">Настроение</div><div class="v" id="dashMood">—</div></div>
+          <div class="stat"><div class="k">Сон</div><div class="v" id="dashSleep">—</div></div>
+          <div class="stat"><div class="k">Энергия</div><div class="v" id="dashEnergy">—</div></div>
+          <div class="stat"><div class="k">Боль</div><div class="v" id="dashPain">—</div></div>
+        </div>
+        <p class="muted" id="dashStatus" style="margin:10px 0 0">Чек-ин ещё не заполнен — удели себе пару минут ниже.</p>
+      </div>
+
+      <!-- Забота о себе: Вода и Витамины -->
+      <div class="card">
+        <h2>Забота о себе</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="muted">Водный баланс:</span>
+          <span id="waterCountText" style="font-size:13px;font-weight:600">0 из 8 стаканов</span>
+        </div>
+        <div class="water-row" id="waterRow"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span class="muted">Приём добавок / витаминов:</span>
+          <button id="medsToggle" class="btn btn-secondary btn-sm">○ Принять витамины</button>
+        </div>
+      </div>
+
+      <!-- План на день -->
+      <div class="card">
+        <h2>План на день</h2>
+        <p class="muted">Три маленьких дела — отмечай галочкой прямо здесь:</p>
+        <div id="goalsList"></div>
+        
+        <details style="margin-top:14px">
+          <summary style="font-size:13px;color:var(--muted);cursor:pointer;font-weight:600">Настроить дела на сегодня ✎</summary>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+            <input id="goalInput1" placeholder="Например, спокойно позавтракать">
+            <input id="goalInput2" placeholder="Немного подвигаться или погулять">
+            <input id="goalInput3" placeholder="Найти 10 минут для себя">
+            <button class="btn btn-secondary btn-sm" id="saveGoalsBtn" style="align-self:flex-start">Сохранить дела</button>
+          </div>
+        </details>
+      </div>
+
+      <!-- Маленькие победы -->
+      <div class="card">
+        <h2>Маленькие победы</h2>
+        <p class="muted">Что сегодня получилось, даже если это совсем небольшая вещь?</p>
+        <div class="field">
+          <textarea id="winInput" placeholder="Например: отдохнула, попросила о помощи, сделала разминку…"></textarea>
+        </div>
+        <button class="btn btn-secondary" id="saveWinBtn">Сохранить победу</button>
+        <div id="winsList" style="margin-top:14px"></div>
+      </div>
+
+      <!-- Прогресс за неделю -->
+      <div class="card">
+        <h2>Прогресс за неделю</h2>
+        <div class="stat-grid">
+          <div class="stat"><div class="k">Чек-ины</div><div class="v" id="weekChecks">0 / 7</div></div>
+          <div class="stat"><div class="k">Записи веса</div><div class="v" id="weekWeights">0</div></div>
+        </div>
+        <div style="height:7px;background:var(--line);border-radius:10px;overflow:hidden;margin-top:12px">
+          <div id="weekBar" style="height:100%;width:0%;background:var(--accent);border-radius:10px;transition:width 0.3s ease"></div>
+        </div>
+        <p class="muted" id="weekSummary" style="margin:10px 0 0">Каждая запись — уже шаг к вниманию к себе.</p>
+        <div class="actions" style="margin-top:12px">
+          <button class="btn btn-secondary btn-sm" data-gotab="dynamics">Вес и динамика</button>
+          <button class="btn btn-secondary btn-sm" data-gotab="calendar">Календарь</button>
+        </div>
+      </div>
+
+      <!-- Ежедневный чек-ин -->
+      <div class="card" id="checkinCard">
+        <h2>Ежедневный чек-ин</h2>
+        <div class="field">
+          <label for="checkDate">Дата</label>
+          <input type="date" id="checkDate">
+        </div>
+        <div class="stat-grid">
+          <div class="field">
+            <label for="mood">Настроение</label>
+            <select id="mood">
+              <option value="">Выбрать</option>
+              <option>😊 Отличное</option>
+              <option>🙂 Хорошее</option>
+              <option>😐 Нормальное</option>
+              <option>😔 Грустное</option>
+              <option>😣 Тревожное</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sleep">Сон, часов</label>
+            <input id="sleep" type="number" min="0" max="24" step="0.5" placeholder="Например, 7.5">
+          </div>
+          <div class="field">
+            <label for="energy">Энергия (1–10)</label>
+            <input id="energy" type="number" min="1" max="10" placeholder="7">
+          </div>
+          <div class="field">
+            <label for="pain">Боль (0–10)</label>
+            <input id="pain" type="number" min="0" max="10" placeholder="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Если есть дискомфорт, где ощущается?</label>
+          <div class="chip-group">
+            <span class="chip pain-chip">Шея</span>
+            <span class="chip pain-chip">Плечи</span>
+            <span class="chip pain-chip">Поясница</span>
+            <span class="chip pain-chip">Суставы</span>
+            <span class="chip pain-chip">Голова</span>
+            <span class="chip pain-chip">Мышцы</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="dayPlan">План / забота о себе</label>
+          <textarea id="dayPlan" placeholder="Что хочу сделать сегодня, даже если совсем немного…"></textarea>
+        </div>
+        <div class="field">
+          <label for="todayNote">Заметки и ощущения</label>
+          <textarea id="todayNote" placeholder="Как прошёл день, что хочется запомнить"></textarea>
+        </div>
+        <button class="btn btn-primary" id="saveCheckBtn">Сохранить чек-ин 🌷</button>
+      </div>
+    </section>
+
+    <!-- PANEL 2: КАЛЕНДАРЬ -->
+    <section id="calendar" class="panel">
+      <div class="card">
+        <div class="cal-header">
+          <button class="btn btn-secondary btn-sm" id="calPrevMonth">←</button>
+          <h2 id="calMonthTitle" style="margin:0">Октябрь 2026</h2>
+          <button class="btn btn-secondary btn-sm" id="calNextMonth">→</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div style="display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center">
+          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot"></span> Чек-ин</span>
+          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot" style="background:var(--success)"></span> Тренировка</span>
+          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot" style="background:#5594b8"></span> Вес</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Записи за день: <span id="selectedDateTitle" style="font-weight:normal;font-size:15px;color:var(--muted)"></span></h2>
+        <div id="dayDetailsContent"></div>
+      </div>
+    </section>
+
+    <!-- PANEL 3: ТРЕНИРОВКИ -->
+    <section id="workouts" class="panel">
+      <!-- Таймер дыхания и отдыха -->
+      <div class="card">
+        <h2>Таймер дыхания и отдыха</h2>
+        <div style="text-align:center;padding:10px 0">
+          <div id="timerDisplay" style="font-size:36px;font-weight:750;letter-spacing:1px;color:var(--accent)">00:00</div>
+          <div class="actions" style="justify-content:center;margin-top:12px">
+            <button class="btn btn-secondary btn-sm timer-preset" data-mins="1">1 мин</button>
+            <button class="btn btn-secondary btn-sm timer-preset" data-mins="2">2 мин</button>
+            <button class="btn btn-secondary btn-sm timer-preset" data-mins="3">3 мин</button>
+            <button class="btn btn-secondary btn-sm timer-preset" data-mins="5">5 мин</button>
+            <button class="btn btn-danger btn-sm" id="timerResetBtn">Сброс</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Мои комплексы и упражнения</h2>
+        <p class="muted">Выбирай только то, что комфортно. При любой боли или усталости сделай паузу.</p>
+        <div id="exerciseCheckboxes"></div>
+
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <input id="customExerciseInput" placeholder="Добавить своё упражнение...">
+          <button class="btn btn-secondary btn-sm" id="addExerciseBtn" style="flex-shrink:0">+ Добавить</button>
+        </div>
+
+        <div class="field" style="margin-top:14px">
+          <label for="workoutDate">Дата выполнения</label>
+          <input type="date" id="workoutDate">
+        </div>
+        <div class="field">
+          <label for="workoutNote">Комментарий и самочувствие</label>
+          <textarea id="workoutNote" placeholder="Как прошло занятие, лёгкость или напряжение"></textarea>
+        </div>
+        <button class="btn btn-primary" id="saveWorkoutBtn">Сохранить тренировку 🌿</button>
+      </div>
+
+      <div class="card">
+        <h2>История занятий</h2>
+        <div id="workoutHistoryList"></div>
+      </div>
+    </section>
+
+    <!-- PANEL 4: ДИНАМИКА -->
+    <section id="dynamics" class="panel">
+      <div class="card">
+        <h2>Зафиксировать вес</h2>
+        <div class="stat-grid">
+          <div class="field">
+            <label for="weightDate">Дата</label>
+            <input type="date" id="weightDate">
+          </div>
+          <div class="field">
+            <label for="weightVal">Вес, кг</label>
+            <input type="number" id="weightVal" step="0.1" placeholder="Например, 48.2">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="saveWeightBtn">Добавить вес</button>
+      </div>
+
+      <div class="card">
+        <h2>График динамики</h2>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+          <div class="chip-group" style="margin:0">
+            <span class="chip metric-btn active" data-metric="weight">Вес</span>
+            <span class="chip metric-btn" data-metric="sleep">Сон</span>
+            <span class="chip metric-btn" data-metric="pain">Боль</span>
+          </div>
+          <div class="chip-group" style="margin:0">
+            <span class="chip period-btn" data-period="7d">7 дн</span>
+            <span class="chip period-btn active" data-period="30d">30 дн</span>
+            <span class="chip period-btn" data-period="90d">90 дн</span>
+            <span class="chip period-btn" data-period="all">Всё</span>
+          </div>
+        </div>
+
+        <canvas id="dynamicsChart" style="width:100%;height:220px;display:block"></canvas>
+        <p class="muted" id="dynamicsSummary" style="margin-top:10px;text-align:center"></p>
+      </div>
+
+      <div class="card">
+        <h2>История записей веса</h2>
+        <div id="weightHistoryList"></div>
+      </div>
+    </section>
+
+    <!-- PANEL 5: МОЁ ТЕЛО -->
+    <section id="body" class="panel">
+      <div class="card">
+        <h2>Замеры тела</h2>
+        <div class="field">
+          <label for="measureDate">Дата замеров</label>
+          <input type="date" id="measureDate">
+        </div>
+        <div class="stat-grid stat-grid-4">
+          <div class="field"><label for="waist">Талия, см</label><input type="number" id="waist" step="0.1"></div>
+          <div class="field"><label for="hips">Бёдра, см</label><input type="number" id="hips" step="0.1"></div>
+          <div class="field"><label for="thigh">Бедро, см</label><input type="number" id="thigh" step="0.1"></div>
+          <div class="field"><label for="chest">Грудь, см</label><input type="number" id="chest" step="0.1"></div>
+          <div class="field"><label for="bicep">Рука, см</label><input type="number" id="bicep" step="0.1"></div>
+        </div>
+        <div class="field">
+          <label for="measureNote">Заметка</label>
+          <textarea id="measureNote" placeholder="Например: утро натощак, без отёков"></textarea>
+        </div>
+        <button class="btn btn-primary" id="saveMeasureBtn">Сохранить замеры 🌸</button>
+      </div>
+
+      <div class="card">
+        <h2>История замеров</h2>
+        <div id="measureHistoryList"></div>
+      </div>
+    </section>
+
+    <!-- PANEL 6: ПАСПОРТ -->
+    <section id="passport" class="panel">
+      <div class="card">
+        <h2>Паспорт восстановления</h2>
+        <p class="muted">Все данные сохраняются конфиденциально на твоём устройстве в IndexedDB браузера. Регулярно скачивай резервную копию.</p>
+        
+        <div class="actions">
+          <button class="btn btn-primary" id="exportBackupBtn">Скачать резервную копию 📁</button>
+          <button class="btn btn-secondary" id="importBackupBtn">Восстановить из файла ↺</button>
+          <button class="btn btn-secondary" id="loadInitialBackupBtn">Загрузить данные (22 окт) 🌸</button>
+          <input type="file" id="importBackupInput" accept="application/json,.json" style="display:none">
+        </div>
+
+        <h3>Статистика сохранённых данных</h3>
+        <p class="muted" id="passportSummary"></p>
+
+        <h3 style="margin-top:20px">Сводка для врача / тренера</h3>
+        <div style="background:var(--bg);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px;font-size:13px;white-space:pre-wrap;font-family:monospace;color:var(--ink)" id="reportPreview"></div>
+        <div style="margin-top:10px">
+          <button class="btn btn-secondary btn-sm" id="copyReportBtn">Скопировать сводку 📋</button>
+        </div>
+
+        <h3 style="margin-top:24px;color:var(--danger)">Очистка данных</h3>
+        <button class="btn btn-danger btn-sm" id="clearAllBtn">Удалить все данные</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav" aria-label="Основное меню">
+    <button class="nav-item active" data-tab="today">
+      <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span>Сегодня</span>
+    </button>
+    <button class="nav-item" data-tab="calendar">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>Календарь</span>
+    </button>
+    <button class="nav-item" data-tab="workouts">
+      <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      <span>ЛФК</span>
+    </button>
+    <button class="nav-item" data-tab="dynamics">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>Динамика</span>
+    </button>
+    <button class="nav-item" data-tab="body">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Тело</span>
+    </button>
+    <button class="nav-item" data-tab="passport">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Паспорт</span>
+    </button>
+  </nav>
+
+  <div id="toast"></div>
+
+</body>
+</html>
