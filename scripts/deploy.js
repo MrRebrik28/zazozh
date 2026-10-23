@@ -9,6 +9,12 @@ const distDir = path.resolve('dist');
 fs.writeFileSync(path.join(distDir, '.nojekyll'), '');
 fs.copyFileSync(path.join(distDir, 'index.html'), path.join(distDir, '404.html'));
 
+// Remove old .git in dist if present for fresh push
+const distGit = path.join(distDir, '.git');
+if (fs.existsSync(distGit)) {
+  fs.rmSync(distGit, { recursive: true, force: true });
+}
+
 console.log('📦 Pushing to gh-pages branch...');
 const commands = [
   'git init',

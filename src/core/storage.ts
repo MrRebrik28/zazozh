@@ -1,5 +1,6 @@
 import { AppData, AppBackupV3 } from './types';
 import { getEmptyAppData, normalizeBackup } from './migration';
+import { getInitialSeedData } from './seed_data';
 
 const DB_NAME = 'zazozh_db';
 const DB_VERSION = 1;
@@ -23,14 +24,18 @@ class StorageService {
     try {
       // 1. Try reading from IndexedDB
       const idbData = await this.readFromIndexedDB();
-      if (idbData && idbData.checks) {
+      if (idbData && (idbData.checks?.length || idbData.weights?.length || idbData.workouts?.length)) {
         this.memoryData = normalizeBackup({ data: idbData });
       } else {
         // 2. Try reading from LocalStorage v3
         const lsV3 = localStorage.getItem(LS_V3_KEY);
         if (lsV3) {
           const parsed = JSON.parse(lsV3);
-          this.memoryData = normalizeBackup({ data: parsed });
+          if (parsed && (parsed.checks?.length || parsed.weights?.length || parsed.workouts?.length)) {
+            this.memoryData = normalizeBackup({ data: parsed });
+          } else {
+            this.memoryData = getInitialSeedData();
+          }
         } else {
           // 3. Try reading legacy localStorage
           const legacyMain = localStorage.getItem(LS_LEGACY_KEY);
@@ -49,7 +54,7 @@ class StorageService {
             };
             this.memoryData = normalizeBackup(combined);
           } else {
-            this.memoryData = getEmptyAppData();
+            this.memoryData = getInitialSeedData();
           }
         }
       }
@@ -176,6 +181,12 @@ class StorageService {
       console.error('Import failed:', err);
       return false;
     }
+  }
+
+  public async resetToInitialSeed(): Promise<void> {
+    this.memoryData = getInitialSeedData();
+    await this.persist();
+    this.notify();
   }
 
   public async clearAll(): Promise<void> {

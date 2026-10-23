@@ -49,6 +49,15 @@ export function setupPassport() {
     fileInput.value = '';
   });
 
+  // Load Initial Seed Backup
+  document.getElementById('loadInitialBackupBtn')?.addEventListener('click', async () => {
+    if (confirm('Загрузить данные из резервной копии от 22 октября 2026?')) {
+      await storage.resetToInitialSeed();
+      haptics.success();
+      showToast('Данные за 22 октября успешно загружены! 🌸');
+    }
+  });
+
   // Clear All
   document.getElementById('clearAllBtn')?.addEventListener('click', async () => {
     if (confirm('Точно удалить все данные? Это действие необратимо. Сначала скачай резервную копию, если нужно сохранить историю.')) {

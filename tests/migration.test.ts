@@ -65,3 +65,13 @@ test('normalizeBackup should handle legacy flat goals and wins', () => {
   assert.equal(normalized.wins.length, 1);
   assert.equal(normalized.wins[0].text, 'Погуляла в парке');
 });
+
+test('getInitialSeedData should load the 22-10-2026 backup correctly', async () => {
+  const { getInitialSeedData } = await import('../src/core/seed_data');
+  const seed = getInitialSeedData();
+  assert.equal(seed.checks.length, 1);
+  assert.equal(seed.checks[0].date, '2026-10-21');
+  assert.equal(seed.workouts.length, 3);
+  assert.equal(seed.weights.length, 2);
+  assert.equal(seed.weights[1].weight, 47);
+});
