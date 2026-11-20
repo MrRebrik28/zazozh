@@ -78,7 +78,7 @@ export function renderCalendar() {
     let dotsHtml = '';
     if (hasCheck) dotsHtml += '<span class="cal-dot" title="Чек-ин"></span>';
     if (hasWorkout) dotsHtml += '<span class="cal-dot" style="background:var(--success)" title="Тренировка"></span>';
-    if (hasWeight) dotsHtml += '<span class="cal-dot" style="background:#5594b8" title="Вес"></span>';
+    if (hasWeight) dotsHtml += '<span class="cal-dot" style="background:var(--info)" title="Вес"></span>';
 
     html += `
       <div class="cal-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" data-date="${dateKey}">
@@ -156,7 +156,7 @@ function renderDayDetails(dateStr: string) {
     html += `
       <div class="entry-card">
         <div class="entry-header">
-          <span class="badge" style="background:#e8f2f8;color:#2b6688">Вес</span>
+          <span class="badge" style="background:var(--info-soft);color:var(--info)">Вес</span>
           <button class="btn btn-danger btn-sm del-weight" data-date="${weight.date}">Удалить</button>
         </div>
         <div><strong>Вес:</strong> ${weight.weight} кг</div>

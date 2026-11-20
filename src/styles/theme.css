@@ -1,53 +1,95 @@
+/* ==========================================================================
+   🏛️ ДИЗАЙН-СИСТЕМА: LIGHT-FIRST ENGINEERING UI (Автор: mrrebrik28)
+   Направление: Медицина / Здоровье / Восстановление
+   Палитра: Бирюзовый / Мятно-голубой (#0D9488) + Нейтральный чистый светлый холст
+   Типографика: Montserrat (заголовки) + Open Sans (текст) + Roboto Mono (числа)
+   ========================================================================== */
+
 :root {
-  --bg: #fbf7f6;
-  --card: #ffffff;
-  --ink: #322b2b;
-  --muted: #7d7270;
-  --accent: #bd8795;
-  --accent-hover: #aa7482;
-  --accent-soft: #f7ecef;
-  --line: #ede2e3;
-  --success: #5a9e7a;
-  --success-soft: #eaf5ef;
-  --danger: #b85d56;
-  --danger-soft: #fbeee9;
-  --shadow: 0 4px 16px rgba(104, 75, 60, 0.05);
-  --radius-lg: 20px;
-  --radius-md: 14px;
-  --radius-sm: 9px;
-  --bottom-nav-height: 64px;
+  /* 1. Иерархия светлых поверхностей (Surface Hierarchy) */
+  --surface-canvas:      #F8FAFC; /* Чистый нейтральный светло-серый фон страницы */
+  --surface-card:        #FFFFFF; /* Белоснежные карточки первого плана */
+  --surface-elevated:    #FFFFFF; /* Выпадающие списки, модальные окна, тултипы */
+  --surface-muted:       #F1F5F9; /* Вторичные секции, плашки, неактивные табы */
+  --surface-subtle:      #E2E8F0; /* Разделители, линии сетки, неактивные границы */
+
+  /* 2. Контрастный текст (Стандарт WCAG AAA) */
+  --text-main:           #0F172A; /* Глубокий темно-сланцевый (контраст > 15:1) */
+  --text-muted:          #475569; /* Вторичный текст, параграфы, описания */
+  --text-caption:        #64748B; /* Метаданные, плейсхолдеры, даты, мелкие подписи */
+  --text-on-accent:      #FFFFFF; /* Белый текст поверх акцентных кнопок */
+
+  /* 3. Психология цвета: Медицина и Здоровье (Стерильность, безопасность, забота) */
+  --accent:              #0D9488; /* Основной акцент (Teal 600) — спокойствие и облегчение */
+  --accent-hover:        #0F766E; /* Teal 700 для интерактивного наведения */
+  --accent-secondary:    #06B6D4; /* Вторичный мятно-голубой (Cyan 500) */
+  --accent-soft:         #F0FDFA; /* Сверхмягкая бирюзовая подложка (Teal 50) */
+  --accent-subtle:       #CCFBF1; /* Мягкая заливка бейджей и тегов (Teal 100) */
+
+  /* Вспомогательные статусные цвета */
+  --success:             #16A34A; /* Природный изумруд (Green 600) */
+  --success-soft:        #F0FDF4; /* Green 50 */
+  --danger:              #DC2626; /* Сигнальный красный для необратимых действий */
+  --danger-soft:         #FEF2F2; /* Red 50 */
+  --info:                #0284C7; /* Сапфировый для веса и метрик */
+  --info-soft:           #F0F9FF; /* Sky 50 */
+
+  /* 4. Микро-тени (Soft Ambient Shadows вместо жирных рамок) */
+  --shadow-sm:           0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card:         0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-hover:        0 12px 24px -4px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-modal:        0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+  /* 5. Типографическая система */
+  --font-heading:        'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body:           'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:           'Roboto Mono', 'IBM Plex Mono', SFMono-Regular, monospace;
+
+  /* 6. Сетка скруглений и отступов */
+  --radius-sm:           8px;
+  --radius-md:           12px;
+  --radius-lg:           16px;
+  --radius-pill:         9999px;
+
+  /* 7. Закон Фиттса: минимальный размер кликабельной зоны 48px */
+  --touch-target-min:    48px;
+  --bottom-nav-height:   64px;
+
+  /* Совместимость с переменными предыдущей версии */
+  --bg:                  var(--surface-canvas);
+  --card:                var(--surface-card);
+  --ink:                 var(--text-main);
+  --muted:               var(--text-muted);
+  --line:                var(--surface-subtle);
+  --shadow:              var(--shadow-card);
 }
 
-[data-theme="dark"] {
-  --bg: #191617;
-  --card: #231f20;
-  --ink: #eee6e5;
-  --muted: #a69a98;
-  --accent: #d197a6;
-  --accent-hover: #deb0bc;
-  --accent-soft: #382a2e;
-  --line: #362e30;
-  --success: #70b38f;
-  --success-soft: #1d3326;
-  --danger: #cf7872;
-  --danger-soft: #3a2221;
-  --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-}
-
+/* Глобальный сброс и базовая геометрия */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  background-color: var(--surface-canvas);
+}
+
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  background-color: var(--surface-canvas);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
   min-height: 100vh;
   padding-top: env(safe-area-inset-top);
   padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 24px);
-  transition: background 0.25s ease, color 0.25s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  letter-spacing: -0.02em;
 }

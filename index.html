@@ -3,12 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fbf7f6">
+  <meta name="theme-color" content="#F8FAFC">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Восстановление">
   <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <title>Моё восстановление</title>
+
+  <!-- Google Fonts: Montserrat (Заголовки), Open Sans (Текст), Roboto Mono (Метрики) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;500;600&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="./src/styles/theme.css">
   <link rel="stylesheet" href="./src/styles/main.css">
   <!-- Telegram WebApp SDK -->
@@ -17,13 +24,10 @@
 <body>
   <header class="app-header">
     <div>
-      <p class="eyebrow">МОЁ ПРОСТРАНСТВО</p>
+      <span class="brand-badge">Моё пространство</span>
       <h1 class="app-title">Привет, Дашуля ♡</h1>
       <p class="app-subtitle">Твоё бережное восстановление — маленькими шагами, без давления.</p>
     </div>
-    <button id="themeToggle" class="theme-toggle" aria-label="Переключить тему">
-      <span id="themeIcon">🌙</span>
-    </button>
   </header>
 
   <main class="container">
@@ -32,7 +36,7 @@
       <div class="card">
         <h2 id="welcomeDate">Твой день</h2>
         <p class="muted" style="margin-top:0">Не обязательно успеть всё. Достаточно заметить, как ты себя чувствуешь, и сделать один комфортный шаг.</p>
-        <div style="margin-top:12px">
+        <div style="margin-top:14px">
           <button class="btn btn-primary" id="jumpCheckin">Заполнить чек-ин ↓</button>
         </div>
       </div>
@@ -46,7 +50,7 @@
           <div class="stat"><div class="k">Энергия</div><div class="v" id="dashEnergy">—</div></div>
           <div class="stat"><div class="k">Боль</div><div class="v" id="dashPain">—</div></div>
         </div>
-        <p class="muted" id="dashStatus" style="margin:10px 0 0">Чек-ин ещё не заполнен — удели себе пару минут ниже.</p>
+        <p class="muted" id="dashStatus" style="margin:12px 0 0">Чек-ин ещё не заполнен — удели себе пару минут ниже.</p>
       </div>
 
       <!-- Забота о себе: Вода и Витамины -->
@@ -54,10 +58,10 @@
         <h2>Забота о себе</h2>
         <div style="display:flex;justify-content:space-between;align-items:center">
           <span class="muted">Водный баланс:</span>
-          <span id="waterCountText" style="font-size:13px;font-weight:600">0 из 8 стаканов</span>
+          <span id="waterCountText" style="font-size:13px;font-weight:600;color:var(--accent)">0 из 8 стаканов</span>
         </div>
         <div class="water-row" id="waterRow"></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
           <span class="muted">Приём добавок / витаминов:</span>
           <button id="medsToggle" class="btn btn-secondary btn-sm">○ Принять витамины</button>
         </div>
@@ -70,8 +74,8 @@
         <div id="goalsList"></div>
         
         <details style="margin-top:14px">
-          <summary style="font-size:13px;color:var(--muted);cursor:pointer;font-weight:600">Настроить дела на сегодня ✎</summary>
-          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+          <summary style="font-size:13px;color:var(--text-muted);cursor:pointer;font-weight:600">Настроить дела на сегодня ✎</summary>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
             <input id="goalInput1" placeholder="Например, спокойно позавтракать">
             <input id="goalInput2" placeholder="Немного подвигаться или погулять">
             <input id="goalInput3" placeholder="Найти 10 минут для себя">
@@ -88,7 +92,7 @@
           <textarea id="winInput" placeholder="Например: отдохнула, попросила о помощи, сделала разминку…"></textarea>
         </div>
         <button class="btn btn-secondary" id="saveWinBtn">Сохранить победу</button>
-        <div id="winsList" style="margin-top:14px"></div>
+        <div id="winsList" style="margin-top:16px"></div>
       </div>
 
       <!-- Прогресс за неделю -->
@@ -98,11 +102,11 @@
           <div class="stat"><div class="k">Чек-ины</div><div class="v" id="weekChecks">0 / 7</div></div>
           <div class="stat"><div class="k">Записи веса</div><div class="v" id="weekWeights">0</div></div>
         </div>
-        <div style="height:7px;background:var(--line);border-radius:10px;overflow:hidden;margin-top:12px">
+        <div style="height:8px;background:var(--surface-muted);border-radius:10px;overflow:hidden;margin-top:14px">
           <div id="weekBar" style="height:100%;width:0%;background:var(--accent);border-radius:10px;transition:width 0.3s ease"></div>
         </div>
-        <p class="muted" id="weekSummary" style="margin:10px 0 0">Каждая запись — уже шаг к вниманию к себе.</p>
-        <div class="actions" style="margin-top:12px">
+        <p class="muted" id="weekSummary" style="margin:12px 0 0">Каждая запись — уже шаг к вниманию к себе.</p>
+        <div class="actions" style="margin-top:14px">
           <button class="btn btn-secondary btn-sm" data-gotab="dynamics">Вес и динамика</button>
           <button class="btn btn-secondary btn-sm" data-gotab="calendar">Календарь</button>
         </div>
@@ -161,7 +165,7 @@
           <label for="todayNote">Заметки и ощущения</label>
           <textarea id="todayNote" placeholder="Как прошёл день, что хочется запомнить"></textarea>
         </div>
-        <button class="btn btn-primary" id="saveCheckBtn">Сохранить чек-ин 🌷</button>
+        <button class="btn btn-primary" id="saveCheckBtn">Сохранить чек-ин 🌿</button>
       </div>
     </section>
 
@@ -174,15 +178,15 @@
           <button class="btn btn-secondary btn-sm" id="calNextMonth">→</button>
         </div>
         <div class="cal-grid" id="calGrid"></div>
-        <div style="display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:14px;justify-content:center">
-          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot"></span> Чек-ин</span>
-          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot" style="background:var(--success)"></span> Тренировка</span>
-          <span style="display:flex;align-items:center;gap:4px"><span class="cal-dot" style="background:#5594b8"></span> Вес</span>
+        <div style="display:flex;gap:14px;font-size:12px;color:var(--text-caption);margin-top:16px;justify-content:center;font-weight:600">
+          <span style="display:flex;align-items:center;gap:5px"><span class="cal-dot"></span> Чек-ин</span>
+          <span style="display:flex;align-items:center;gap:5px"><span class="cal-dot" style="background:var(--success)"></span> Тренировка</span>
+          <span style="display:flex;align-items:center;gap:5px"><span class="cal-dot" style="background:var(--info)"></span> Вес</span>
         </div>
       </div>
 
       <div class="card">
-        <h2>Записи за день: <span id="selectedDateTitle" style="font-weight:normal;font-size:15px;color:var(--muted)"></span></h2>
+        <h2>Записи за день: <span id="selectedDateTitle" style="font-weight:600;font-size:15px;color:var(--accent)"></span></h2>
         <div id="dayDetailsContent"></div>
       </div>
     </section>
@@ -192,9 +196,9 @@
       <!-- Таймер дыхания и отдыха -->
       <div class="card">
         <h2>Таймер дыхания и отдыха</h2>
-        <div style="text-align:center;padding:10px 0">
-          <div id="timerDisplay" style="font-size:36px;font-weight:750;letter-spacing:1px;color:var(--accent)">00:00</div>
-          <div class="actions" style="justify-content:center;margin-top:12px">
+        <div style="text-align:center;padding:12px 0">
+          <div id="timerDisplay">00:00</div>
+          <div class="actions" style="justify-content:center;margin-top:14px">
             <button class="btn btn-secondary btn-sm timer-preset" data-mins="1">1 мин</button>
             <button class="btn btn-secondary btn-sm timer-preset" data-mins="2">2 мин</button>
             <button class="btn btn-secondary btn-sm timer-preset" data-mins="3">3 мин</button>
@@ -209,12 +213,12 @@
         <p class="muted">Выбирай только то, что комфортно. При любой боли или усталости сделай паузу.</p>
         <div id="exerciseCheckboxes"></div>
 
-        <div style="display:flex;gap:8px;margin-top:14px">
+        <div style="display:flex;gap:10px;margin-top:16px">
           <input id="customExerciseInput" placeholder="Добавить своё упражнение...">
           <button class="btn btn-secondary btn-sm" id="addExerciseBtn" style="flex-shrink:0">+ Добавить</button>
         </div>
 
-        <div class="field" style="margin-top:14px">
+        <div class="field" style="margin-top:16px">
           <label for="workoutDate">Дата выполнения</label>
           <input type="date" id="workoutDate">
         </div>
@@ -250,7 +254,7 @@
 
       <div class="card">
         <h2>График динамики</h2>
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
           <div class="chip-group" style="margin:0">
             <span class="chip metric-btn active" data-metric="weight">Вес</span>
             <span class="chip metric-btn" data-metric="sleep">Сон</span>
@@ -265,7 +269,7 @@
         </div>
 
         <canvas id="dynamicsChart" style="width:100%;height:220px;display:block"></canvas>
-        <p class="muted" id="dynamicsSummary" style="margin-top:10px;text-align:center"></p>
+        <p class="muted" id="dynamicsSummary" style="margin-top:12px;text-align:center;font-weight:500"></p>
       </div>
 
       <div class="card">
@@ -318,19 +322,19 @@
         <h3>Статистика сохранённых данных</h3>
         <p class="muted" id="passportSummary"></p>
 
-        <h3 style="margin-top:20px">Сводка для врача / тренера</h3>
-        <div style="background:var(--bg);border:1px solid var(--line);border-radius:var(--radius-md);padding:12px;font-size:13px;white-space:pre-wrap;font-family:monospace;color:var(--ink)" id="reportPreview"></div>
-        <div style="margin-top:10px">
+        <h3 style="margin-top:22px">Сводка для врача / тренера</h3>
+        <div style="background:var(--surface-muted);border:1px solid var(--surface-subtle);border-radius:var(--radius-md);padding:14px;font-size:13px;white-space:pre-wrap;font-family:var(--font-mono);color:var(--text-main)" id="reportPreview"></div>
+        <div style="margin-top:12px">
           <button class="btn btn-secondary btn-sm" id="copyReportBtn">Скопировать сводку 📋</button>
         </div>
 
-        <h3 style="margin-top:24px;color:var(--danger)">Очистка данных</h3>
+        <h3 style="margin-top:26px;color:var(--danger)">Очистка данных</h3>
         <button class="btn btn-danger btn-sm" id="clearAllBtn">Удалить все данные</button>
       </div>
     </section>
   </main>
 
-  <!-- BOTTOM NAVIGATION BAR -->
+  <!-- BOTTOM NAVIGATION BAR (Thumb Zone по закону Фиттса) -->
   <nav class="bottom-nav" aria-label="Основное меню">
     <button class="nav-item active" data-tab="today">
       <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -341,7 +345,7 @@
       <span>Календарь</span>
     </button>
     <button class="nav-item" data-tab="workouts">
-      <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
       <span>ЛФК</span>
     </button>
     <button class="nav-item" data-tab="dynamics">

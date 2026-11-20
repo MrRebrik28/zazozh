@@ -174,8 +174,8 @@ function drawChart() {
 
   const statSummaryEl = document.getElementById('dynamicsSummary');
   if (!rawPoints.length) {
-    ctx.fillStyle = '#9b8f8d';
-    ctx.font = '14px -apple-system, sans-serif';
+    ctx.fillStyle = '#64748B';
+    ctx.font = '14px "Open Sans", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Добавь записи, чтобы увидеть график динамики', width / 2, height / 2);
     if (statSummaryEl) statSummaryEl.textContent = 'Нет данных за выбранный период';
@@ -208,7 +208,7 @@ function drawChart() {
   const getY = (v: number) => padTop + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
 
   // Grid lines
-  ctx.strokeStyle = '#ebe2e1';
+  ctx.strokeStyle = '#E2E8F0';
   ctx.lineWidth = 1;
   ctx.beginPath();
 
@@ -220,8 +220,8 @@ function drawChart() {
     ctx.moveTo(padLeft, y);
     ctx.lineTo(width - padRight, y);
 
-    ctx.fillStyle = '#9b8f8d';
-    ctx.font = '11px -apple-system, sans-serif';
+    ctx.fillStyle = '#64748B';
+    ctx.font = '11px "Roboto Mono", monospace';
     ctx.textAlign = 'right';
     ctx.fillText(val.toFixed(1), padLeft - 6, y + 3);
   }
@@ -229,8 +229,8 @@ function drawChart() {
 
   // Draw smooth gradient under curve
   const grad = ctx.createLinearGradient(0, padTop, 0, height - padBottom);
-  grad.addColorStop(0, 'rgba(189, 135, 149, 0.28)');
-  grad.addColorStop(1, 'rgba(189, 135, 149, 0.0)');
+  grad.addColorStop(0, 'rgba(13, 148, 136, 0.20)');
+  grad.addColorStop(1, 'rgba(13, 148, 136, 0.0)');
 
   ctx.beginPath();
   rawPoints.forEach((p, i) => {
@@ -249,7 +249,7 @@ function drawChart() {
   ctx.fill();
 
   // Draw Line
-  ctx.strokeStyle = '#bd8795';
+  ctx.strokeStyle = '#0D9488';
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   rawPoints.forEach((p, i) => {
@@ -265,20 +265,20 @@ function drawChart() {
     const x = getX(i);
     const y = getY(p.value);
 
-    ctx.fillStyle = '#bd8795';
+    ctx.fillStyle = '#0D9488';
     ctx.beginPath();
     ctx.arc(x, y, 4, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#FFFFFF';
     ctx.beginPath();
     ctx.arc(x, y, 2, 0, Math.PI * 2);
     ctx.fill();
   });
 
   // Start & End date labels
-  ctx.fillStyle = '#7d7270';
-  ctx.font = '11px -apple-system, sans-serif';
+  ctx.fillStyle = '#64748B';
+  ctx.font = '11px "Open Sans", sans-serif';
   ctx.textAlign = 'left';
   ctx.fillText(formatDateShort(rawPoints[0].date), padLeft, height - 10);
   if (rawPoints.length > 1) {

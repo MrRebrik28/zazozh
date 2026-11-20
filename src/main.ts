@@ -18,22 +18,10 @@ async function initApp() {
     }
   }
 
-  // 2. Initialize Theme
-  const savedTheme = localStorage.getItem('zazozh_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  updateThemeIcon(savedTheme);
+  // 2. Light-First Standard (Авторский стандарт mrrebrik28: исключительно чистый светлый дизайн)
+  document.documentElement.setAttribute('data-theme', 'light');
 
-  const themeToggle = document.getElementById('themeToggle');
-  themeToggle?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('zazozh_theme', next);
-    updateThemeIcon(next);
-    haptics.selection();
-  });
-
-  // 3. Tab Navigation
+  // 3. Tab Navigation (Thumb Zone по закону Фиттса)
   const navButtons = document.querySelectorAll('.nav-item');
   const panels = document.querySelectorAll('.panel');
 
@@ -108,13 +96,6 @@ async function initApp() {
     navigator.serviceWorker.register('./sw.js').catch((err) => {
       console.warn('SW register error:', err);
     });
-  }
-}
-
-function updateThemeIcon(theme: string) {
-  const iconEl = document.getElementById('themeIcon');
-  if (iconEl) {
-    iconEl.textContent = theme === 'dark' ? '☀️' : '🌙';
   }
 }
 
